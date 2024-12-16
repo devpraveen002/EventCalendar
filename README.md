@@ -1,5 +1,5 @@
 1. Once Cloned Create a User and Database in PostgreSQL
-   a. CREATE USER username WITH password 'password';
+ 1. CREATE USER username WITH password 'password';
    CREATE DATABASE database ;
    GRANT ALL PRIVILEGES ON DATABASE database  TO username;
    \c database
@@ -10,7 +10,7 @@
 	Note : Db name and username should be in lowercase
 
 2. Do Migration in Powershell
-   a. dotnet tool install --global dotnet-ef
+ 1. dotnet tool install --global dotnet-ef
       dotnet tool update --global dotnet-ef
       dotnet ef migrations add InitialCreate
       dotnet ef database update 
