@@ -1,0 +1,99 @@
+﻿@model CalendarViewModel
+@{
+    var currentDate = Model.CurrentDate.ToLocalTime();
+    var firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
+    var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+    var firstDayOfWeek = firstDayOfMonth.AddDays(-(int)firstDayOfMonth.DayOfWeek);
+}
+
+<div class="container-fluid mt-4">
+    <div class="card">
+        <div class="card-header bg-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>@Model.CurrentDate.ToString("MMMM yyyy")</h2>
+                <div>
+                    <a asp-action="Index" asp-route-date="@Model.CurrentDate.AddMonths(-1).ToString("yyyy-MM-dd")" 
+                       class="btn btn-outline-primary">Previous</a>
+                    <a asp-action="Index" asp-route-date="@Model.CurrentDate.AddMonths(1).ToString("yyyy-MM-dd")" 
+                       class="btn btn-outline-primary">Next</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-bordered calendar-table">
+                <thead>
+                    <tr>
+                        <th>Sun</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var currentDay = firstDayOfWeek;
+                        while (currentDay <= lastDayOfMonth || currentDay.DayOfWeek != DayOfWeek.Sunday)
+                        {
+                            if (currentDay.DayOfWeek == DayOfWeek.Sunday)
+                            {
+                                @:<tr>
+                            }
+
+                            <td class="calendar-cell @(currentDay.Month == currentDate.Month ? "" : "text-muted")">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="date-number">@currentDay.Day</span>
+                                    <div class="add-event-button">
+                                        <a asp-action="AddEvent" 
+                                           asp-route-date="@currentDay.ToString("yyyy-MM-dd")"
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="events-container">
+                                    @{
+                                        var dayEvents = Model.Events.Where(e => e.Date.Date == currentDay.Date).ToList();
+                                        foreach (var evt in dayEvents)
+                                        {
+                                           <div class="event-item" 
+                                                 data-bs-toggle="tooltip" 
+                                                 data-bs-html="true"
+                                                 title="Title: @evt.Title, Description: @evt.Description">
+                                                 <h6>@evt.Title</h6>  
+                                                 <p>@evt.Description</p>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </td>
+
+                            if (currentDay.DayOfWeek == DayOfWeek.Saturday)
+                            {
+                                @:</tr>
+                            }
+                            currentDay = currentDay.AddDays(1);
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    <div class="card-footer">
+    <div class="d-flex justify-content-end">
+        <a asp-action="ExportToExcel" 
+           asp-route-date="@Model.CurrentDate.ToString("yyyy-MM-dd")"
+           class="btn btn-success me-2">
+            <i class="fas fa-file-excel"></i> Export to Excel
+        </a>
+        <a asp-action="ExportToCsv"
+           asp-route-date="@Model.CurrentDate.ToString("yyyy-MM-dd")"
+           class="btn btn-info">
+            <i class="fas fa-file-csv"></i> Export to CSV
+        </a>
+    </div>
+</div>

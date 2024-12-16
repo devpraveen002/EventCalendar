@@ -1,0 +1,139 @@
+﻿.toast-container {
+    z-index: 1056;
+}
+
+.toast {
+    min-width: 250px;
+}
+.calendar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .calendar th,
+    .calendar td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+        height: 100px;
+    }
+
+    .calendar th {
+        background-color: #f5f5f5;
+        text-align: center;
+    }
+
+.other-month {
+    background-color: #f9f9f9;
+    color: #999;
+}
+
+.date-number {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.events-container {
+    min-height: 60px;
+}
+
+.event {
+    background-color: #007bff;
+    color: white;
+    padding: 2px 5px;
+    margin-bottom: 2px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.calendar-table {
+    table-layout: fixed;
+}
+
+.calendar-cell {
+    height: 120px;
+    padding: 10px !important;
+    position: relative;
+}
+
+.date-number {
+    font-weight: bold;
+}
+
+.add-event-btn {
+    visibility: hidden;
+    padding: 0.125rem 0.25rem;
+    font-size: 0.75rem;
+}
+
+.calendar-cell:hover .add-event-btn {
+    visibility: visible;
+}
+
+.events-container {
+    margin-top: 10px;
+    max-height: 80px;
+    overflow-y: auto;
+}
+
+.event-item {
+    background-color: #007bff;
+    color: white;
+    padding: 2px 6px;
+    margin-bottom: 3px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor:pointer;
+}
+
+.calendar-cell {
+    min-height: 100px;
+    padding: 8px !important;
+}
+
+.date-number {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.add-event-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: none;
+    z-index: 1;
+}
+
+.calendar-cell:hover .add-event-button {
+    display: block;
+}
+
+.events-container {
+    margin-top: 20px;
+}
+
+.tooltip-inner {
+    max-width: 200px;
+    text-align: left;
+}
