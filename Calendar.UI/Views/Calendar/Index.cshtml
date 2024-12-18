@@ -52,6 +52,30 @@
                                            class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-plus"></i>
                                         </a>
+                                        @{
+                                        var DEvents = Model.Events.Where(e => e.Date.Date == currentDay.Date).ToList();
+                                        if (DEvents.Any())
+                                        {
+                                            foreach (var evt in DEvents)
+                                            {
+                                                <a asp-action="EditEvent"
+                                                   asp-controller="Calendar"
+                                                   asp-route-id="@evt.Id"
+                                                   class="btn btn-sm"
+                                                   title="Edit Event">
+                                                    <i class="fas fa-edit" style="color: #FFD700;"></i>
+                                                </a>
+                                                <a asp-action="DeleteEvent" 
+                                                   asp-controller="Calendar"
+                                                   asp-route-id="@evt.Id" 
+                                                   class="btn btn-sm"
+                                                   title="Delete Event">
+                                                    <i class="fas fa-trash-alt" style="color: red;"></i>
+                                                </a>
+                                                break; // Only show one set of buttons
+                                            }
+                                        }
+                                    }
                                     </div>
                                 </div>
                                 <div class="events-container">
@@ -59,13 +83,16 @@
                                         var dayEvents = Model.Events.Where(e => e.Date.Date == currentDay.Date).ToList();
                                         foreach (var evt in dayEvents)
                                         {
+                                           
                                            <div class="event-item" 
                                                  data-bs-toggle="tooltip" 
                                                  data-bs-html="true"
                                                  title="Title: @evt.Title, Description: @evt.Description">
                                                  <h6>@evt.Title</h6>  
                                                  <p>@evt.Description</p>
+
                                             </div>
+                                                
                                         }
                                     }
                                 </div>

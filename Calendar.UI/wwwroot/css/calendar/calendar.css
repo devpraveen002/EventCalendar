@@ -137,3 +137,17 @@
     max-width: 200px;
     text-align: left;
 }
+
+.action-buttons {
+    display: none;
+}
+
+.calendar-cell:hover .action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.action-buttons .btn-sm {
+    padding: 0.15rem 0.3rem;
+    font-size: 0.95rem;
+}

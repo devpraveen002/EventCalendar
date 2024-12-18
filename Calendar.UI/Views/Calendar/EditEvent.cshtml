@@ -1,34 +1,31 @@
-﻿@model Event 
+﻿@model Event
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0">Add Event for @Model.Date.ToString("MMMM dd, yyyy")</h5>
+                    <h5 class="mb-0">Edit Event for @Model.Date.ToString("MMMM dd, yyyy")</h5>
                 </div>
                 <div class="card-body">
-                    <form asp-action="AddEvent" asp-controller="Calendar" method="post">
+                    <form asp-action="EditEvent" asp-controller="Calendar" method="post">
                         <div asp-validation-summary="All" class="text-danger"></div>
-
+                        <input type="hidden" asp-for="Id" />
                         <input type="hidden" asp-for="Date" value="@Model.Date.ToString("yyyy-MM-dd")" />
-
                         <div class="mb-3">
                             <label asp-for="Title" class="form-label">Title</label>
                             <input asp-for="Title" class="form-control" required />
                             <span asp-validation-for="Title" class="text-danger"></span>
                         </div>
-
                         <div class="mb-3">
                             <label asp-for="Description" class="form-label">Description</label>
                             <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
-
                         <div class="d-flex justify-content-end gap-2">
                             <a asp-action="Index"
                                asp-route-date="@Model.Date.ToString("yyyy-MM-dd")"
                                class="btn btn-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Save Event</button>
+                            <button type="submit" class="btn btn-primary">Update Event</button>
                         </div>
                     </form>
                 </div>

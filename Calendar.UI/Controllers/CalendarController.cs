@@ -101,6 +101,115 @@ public class CalendarController : Controller
         }
     }
 
+    public IActionResult EditEvent(int id)
+    {
+        try
+        {
+            _logger.LogInformation($"Showing EditEvent form for event id: {id}");
+            var eventModel = _context.Events.Find(id);
+
+            if (eventModel == null)
+            {
+                _logger.LogWarning($"Event not found with id: {id}");
+                TempData["Error"] = "Event not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View("EditEvent", eventModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error showing EditEvent form");
+            TempData["Error"] = "Unable to show edit form. Please try again.";
+            return RedirectToAction(nameof(Index));
+        }
+    }
+
+    [HttpPost]
+    public IActionResult EditEvent(Event eventModel)
+    {
+        _logger.LogInformation($"Received event update: {eventModel.Title} for date {eventModel.Date}");
+        if (!ModelState.IsValid)
+        {
+            _logger.LogWarning("Model state is invalid");
+            return View(eventModel);
+        }
+
+        try
+        {
+            // Ensure UTC date
+            eventModel.Date = DateTime.SpecifyKind(eventModel.Date.Date, DateTimeKind.Utc);
+            _context.Events.Update(eventModel);
+            var result = _context.SaveChanges();
+            _logger.LogInformation($"Updated event with result: {result}");
+            TempData["Success"] = "Event updated successfully!";
+            return RedirectToAction(nameof(Index), new { date = eventModel.Date.ToString("yyyy-MM-dd") });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating event");
+            ModelState.AddModelError("", "Failed to update event. Please try again.");
+            return View(eventModel);
+        }
+    }
+
+    public IActionResult DeleteEvent(int id)
+    {
+        try
+        {
+            _logger.LogInformation($"Showing DeleteEvent form for id: {id}");
+            var eventModel = _context.Events.FirstOrDefault(e => e.Id == id);
+
+            if (eventModel == null)
+            {
+                _logger.LogWarning($"Event with id {id} not found");
+                TempData["Error"] = "Event not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View("DeleteEvent", eventModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error showing DeleteEvent form");
+            TempData["Error"] = "Unable to show delete form. Please try again.";
+            return RedirectToAction(nameof(Index));
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteEventConfirmed(int id)
+    {
+        try
+        {
+            _logger.LogInformation($"Processing delete request for event id: {id}");
+            var eventModel = _context.Events.FirstOrDefault(e => e.Id == id);
+
+            if (eventModel == null)
+            {
+                _logger.LogWarning($"Event with id {id} not found for deletion");
+                TempData["Error"] = "Event not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            _context.Events.Remove(eventModel);
+            _context.SaveChanges();
+
+            _logger.LogInformation($"Successfully deleted event with id: {id}");
+            TempData["Success"] = "Event deleted successfully!";
+
+            return RedirectToAction(nameof(Index), new { date = eventModel.Date.ToString("yyyy-MM-dd") });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting event");
+            TempData["Error"] = "Failed to delete event. Please try again.";
+            return RedirectToAction(nameof(Index));
+        }
+    }
+
+
 
     public IActionResult ExportToExcel(DateTime date)
     {

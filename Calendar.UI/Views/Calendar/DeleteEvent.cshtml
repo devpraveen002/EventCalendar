@@ -1,0 +1,38 @@
+﻿@model Event
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Delete Event - @Model.Title</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        Are you sure you want to delete this event?
+                    </div>
+                    <dl class="row">
+                        <dt class="col-sm-3">Date</dt>
+                        <dd class="col-sm-9">@Model.Date.ToString("MMMM dd, yyyy")</dd>
+
+                        <dt class="col-sm-3">Title</dt>
+                        <dd class="col-sm-9">@Model.Title</dd>
+
+                        <dt class="col-sm-3">Description</dt>
+                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Description) ? "No description" : Model.Description)</dd>
+                    </dl>
+
+                    <form asp-action="DeleteEventConfirmed" asp-controller="Calendar" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="d-flex justify-content-end gap-2">
+                            <a asp-action="Index"
+                               asp-route-date="@Model.Date.ToString("yyyy-MM-dd")"
+                               class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-danger">Delete Event</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
